@@ -20,7 +20,7 @@ projects:
             repo: https://github.com/mrcomans/networking-app
             branch: main
             region: frankfurt
-            plan: starter
+            plan: free
             buildCommand: npm ci && npm run build
             startCommand: npm run start
             healthCheckPath: /
