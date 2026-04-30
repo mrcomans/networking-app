@@ -1,0 +1,93 @@
+## Master AI Template — Cursor Rules
+Deze regels zijn bedoeld om dit project als generieke basis te gebruiken voor toekomstige projecten.
+Doel: consistente kwaliteit, modulaire features, minimale tech debt, en voorspelbare structuur.
+
+### Communicatie & output
+- Schrijf antwoorden en documentatie in het Nederlands, tenzij expliciet anders gevraagd.
+- Houd uitleg kort en actiegericht; toon alleen code die nodig is.
+- Als je aannames moet maken: noteer ze bovenaan in de output en ga door.
+
+### Algemene engineering-principes
+- Geef altijd de voorkeur aan **eenvoudige oplossingen** boven “clever” code.
+- Vermijd premature abstractions; abstraheer pas bij herhaald gebruik (rule of 3).
+- Minimaliseer globale state; kies lokale state of server state waar passend.
+- Geen “magic” constants: centraliseer als het domein-waarden zijn.
+- Fail fast: valideer input vroeg en geef duidelijke foutmeldingen.
+
+### Architectuur (Next.js App Router)
+- Gebruik Next.js **App Router** (`src/app`) als default.
+- Houd routes dun: routes doen compositie en data-fetching; businesslogica zit in `src/features/**`.
+- Vermijd cross-feature imports. Deelbare code gaat in `src/shared/**`.
+- Houd server en client duidelijk gescheiden:
+  - Server Components standaard, Client Components alleen wanneer nodig.
+  - `use client` zo lokaal mogelijk (kleinste component).
+  - Gebruik server actions of route handlers waar passend; geen client-side secrets.
+
+### Project-structuur (voorkeur)
+- `src/app/**`: routing, layouts, page-level compositie.
+- `src/features/<feature>/**`: feature modules:
+  - `components/` UI specifiek voor de feature
+  - `actions/` (server actions), `api/` (route clients), `queries/` (data toegang)
+  - `schemas/` (zod / validators), `types/` (feature types)
+  - `utils/` (feature helpers)
+- `src/shared/**`: herbruikbare building blocks:
+  - `shared/ui/` (design-system-ish primitives)
+  - `shared/lib/` (helpers zonder UI)
+  - `shared/config/` (runtime config, env parsing)
+- `src/styles/**`: globale styles indien nodig
+
+### TypeScript
+- Geen `any` (behalve als laatste redmiddel; dan isoleren + uitleg in PR/commit).
+- Prefer `unknown` + type guards boven `any`.
+- Gebruik `satisfies` voor config/object-literals waar dat type-checking verbetert.
+- Exporteer types expliciet (`export type ...`).
+
+### React & UI
+- Houd componenten klein en single-purpose.
+- Props zijn API’s: benoem duidelijk, defaults waar logisch.
+- Vermijd inline anonymous functions in hot paths als performance merkbaar is.
+- Zet state zo hoog als nodig, zo laag als mogelijk.
+
+### Tailwind
+- Houd classlists leesbaar:
+  - Groepeer per categorie (layout → spacing → typography → color → effects).
+  - Gebruik `clsx`/`cn` helper voor conditionals (maak `src/shared/lib/cn.ts` wanneer nodig).
+- Prefer utility-first; voeg custom CSS alleen toe voor echte uitzonderingen.
+
+### Data access & side-effects
+- Centraliseer data access per feature (bijv. `src/features/<feature>/queries/*`).
+- Geen fetch duplicatie verspreid door UI; maak een kleine data-layer.
+- Voeg caching/ISR alleen toe met expliciete requirements.
+
+### Error handling & observability
+- Gebruik duidelijke error types/berichten; log geen secrets/PII.
+- Voeg `error.tsx` en `not-found.tsx` toe per route-segment wanneer nodig.
+
+### Security
+- Secrets alleen via environment variables.
+- Nooit secrets hardcoden of committen.
+- Valideer env vars bij startup (server-side) met schema.
+
+### Testing (als gevraagd)
+- Houd tests dicht bij features.
+- Focus op behavior, niet implementatiedetails.
+- Voeg minimale test scaffolding toe; geen test-frameworks installeren zonder verzoek.
+
+### Git & commits
+- Kleine, reviewbare changesets.
+- Commit messages: kort, imperatief, met waarom (niet alleen wat).
+- Geen formatting-only commits tenzij het een bewuste refactor is.
+
+### Documentatie
+- Houd `docs/` project-agnostisch.
+- Nieuwe features krijgen een korte “feature plan” en “product spec” indien relevant.
+
+### Setup & DX
+- Scripts moeten idempotent zijn (meerdere keren kunnen draaien zonder schade).
+- Bij voorkeur geen platform-specifieke aannames; `scripts/setup.sh` werkt in bash (macOS/Linux/Git Bash).
+
+### “Master Template” hernoemen
+- Projectnaam aanpassen moet alleen nodig zijn in:
+  - `package.json` → `name`
+  - `README.md` titel
+  - (optioneel) repository naam / deployment settings
