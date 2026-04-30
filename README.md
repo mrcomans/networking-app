@@ -16,7 +16,21 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### MVP flows
+- **Home / organizer start**: `http://localhost:3000/`
+  - Create an event → get a share link like `/e/{slug}`
+- **Event join (participants)**: `/e/{slug}`
+  - Register (opt-in visibility)
+  - Paste connections (1 name per line)
+  - See “Bekenden op dit event”
+- **Organizer stats**: `/organizer/{eventId}`
+  - Basic counts (total / visible / hidden)
+
+### Notes (MVP constraints)
+- Storage is **Postgres-backed** (via `DATABASE_URL`). Events and attendees persist across restarts.
+- LinkedIn is a separate spike; MVP uses manual connection input. See [`docs/linkedin-spike.md`](docs/linkedin-spike.md).
+- Power Hour checklist: [`docs/powerhour-checklist.md`](docs/powerhour-checklist.md).
+- Render deploy guide: [`docs/render-deploy.md`](docs/render-deploy.md).
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
