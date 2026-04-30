@@ -1,0 +1,34 @@
+# Render Blueprint — Networking App (MVP)
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Connect this repo in Render → Blueprint; apply once. Pushes to `branch` sync the blueprint.
+# If your default branch is not `main`, change `branch` below.
+
+projects:
+  - name: Networking App (MVP)
+    environments:
+      - name: production
+        databases:
+          - name: networking-app-db
+            region: frankfurt
+            plan: free
+            postgresMajorVersion: "18"
+        services:
+          - type: web
+            runtime: node
+            name: networking-app-web
+            repo: https://github.com/mrcomans/networking-app
+            branch: main
+            region: frankfurt
+            plan: starter
+            buildCommand: npm ci && npm run build
+            startCommand: npm run start
+            healthCheckPath: /
+            envVars:
+              - key: DATABASE_URL
+                fromDatabase:
+                  name: networking-app-db
+                  property: connectionString
+              # Optional: full base URL for join links from POST /api/events (see docs/render-deploy.md)
+              - key: NEXT_PUBLIC_BASE_URL
+                sync: false
