@@ -21,6 +21,25 @@ export default async function Home() {
           connecties.
         </p>
 
+        <div className="mt-6 rounded-xl border border-black/10 bg-zinc-50 px-4 py-4 text-sm text-zinc-700 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200">
+          <div className="font-medium text-black dark:text-white">Hoe werkt het?</div>
+          <ol className="mt-2 space-y-1 pl-5">
+            <li className="list-decimal">
+              <span className="font-medium">Organizer</span> maakt een event aan en deelt de deelnemerslink/QR.
+            </li>
+            <li className="list-decimal">
+              <span className="font-medium">Deelnemer</span> meldt zich opt-in aan (standaard <span className="font-medium">onzichtbaar</span>) en kiest
+              zichtbaarheid.
+            </li>
+            <li className="list-decimal">
+              <span className="font-medium">Deelnemer</span> plakt connecties en ziet daarna <span className="font-medium">bekenden op dit event</span>.
+            </li>
+          </ol>
+          <div className="mt-3 rounded-lg border border-black/10 bg-white px-3 py-2 text-xs text-zinc-600 dark:border-white/10 dark:bg-zinc-950 dark:text-zinc-300">
+            Privacy: jij bepaalt of je zichtbaar bent. Default = hidden.
+          </div>
+        </div>
+
         <div className="mt-8">
           <CreateEventClient />
         </div>
