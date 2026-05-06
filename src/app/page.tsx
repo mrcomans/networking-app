@@ -15,7 +15,7 @@ export default function Home() {
         </div>
 
         <div className="mt-10 rounded-xl border border-black/10 bg-zinc-50 px-4 py-3 text-xs text-zinc-700 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-300">
-          Let op: dit gebruikt een in-memory store (restart = data weg). Geschikt voor demo’s / Power Hour.
+          Storage: Postgres via <code className="font-mono">DATABASE_URL</code> (restart = data blijft). Handig voor demo’s / Power Hour.
         </div>
       </main>
     </div>

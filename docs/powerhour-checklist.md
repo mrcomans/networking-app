@@ -19,7 +19,7 @@
 - Laat deelnemers connecties plakken (1 per regel) en daarna refreshen op “Bekenden”.
 
 ## Bekende beperkingen (bewust voor MVP)
-- Data is **in-memory**: server restart = alles weg.
+- Data is **Postgres-backed** (via `DATABASE_URL`): server restart = data blijft.
 - LinkedIn connecties via officiële API niet in MVP; we gebruiken handmatige input.
 - Matching is op genormaliseerde naam (kan false positives/negatives geven).
 
