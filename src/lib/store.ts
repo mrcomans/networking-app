@@ -242,3 +242,43 @@ export async function getEventStats(eventId: string) {
   };
 }
 
+export async function listAttendeesForEvent(input: { eventId: string; limit?: number; offset?: number }) {
+  const limit = Math.max(1, Math.min(200, input.limit ?? 50));
+  const offset = Math.max(0, input.offset ?? 0);
+  const take = limit + 1;
+
+  const res = await query<{
+    id: string;
+    event_id: string;
+    display_name: string;
+    email: string | null;
+    visibility: AttendeeVisibility;
+    created_at: string;
+  }>(
+    `SELECT id, event_id, display_name, email, visibility, created_at
+     FROM attendees
+     WHERE event_id = $1
+     ORDER BY created_at DESC, id DESC
+     LIMIT $2 OFFSET $3`,
+    [input.eventId, take, offset]
+  );
+
+  const rows = res.rows;
+  const hasMore = rows.length > limit;
+  const sliced = rows.slice(0, limit);
+
+  const attendees = sliced.map((row) => ({
+    id: row.id,
+    eventId: row.event_id,
+    displayName: row.display_name,
+    email: row.email ?? undefined,
+    visibility: row.visibility,
+    createdAt: row.created_at,
+  })) satisfies AttendeeRecord[];
+
+  return {
+    attendees,
+    page: { offset, limit, nextOffset: hasMore ? offset + limit : null },
+  };
+}
+
