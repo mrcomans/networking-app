@@ -57,6 +57,23 @@ export async function getEventById(eventId: string): Promise<EventRecord | null>
   return { id: row.id, slug: row.slug, name: row.name, createdAt: row.created_at };
 }
 
+export async function listEvents(input?: { limit?: number }): Promise<EventRecord[]> {
+  const limit = Math.max(1, Math.min(100, input?.limit ?? 20));
+  const res = await query<{ id: string; slug: string; name: string; created_at: string }>(
+    `SELECT id, slug, name, created_at
+     FROM events
+     ORDER BY created_at DESC
+     LIMIT $1`,
+    [limit]
+  );
+  return res.rows.map((row) => ({
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    createdAt: row.created_at,
+  }));
+}
+
 export async function registerAttendee(input: {
   eventId: string;
   displayName: string;
